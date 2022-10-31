@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,7 +46,15 @@ THIRD_PARTY_APP = [
     "drf_spectacular",
 ]
 
-MY_APPS = ["attendance", "clinic", "doctor", "receptionist", "especialty"]
+MY_APPS = [
+    "attendance",
+    "clinic",
+    "doctor",
+    "receptionist",
+    "specialty",
+    "health_plans",
+    "address",
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APP + MY_APPS
 
@@ -83,12 +92,24 @@ WSGI_APPLICATION = "klinica.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+if os.environ.get("TEST"):
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("POSTGRES_DB"),
+            "USER": os.environ.get("POSTGRES_USER"),
+            "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+            "HOST": "db",
+            "PORT": 5432,
+        }
+    }
 
 
 # Password validation
