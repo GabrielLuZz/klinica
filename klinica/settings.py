@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -38,6 +38,16 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
+
+THIRD_PARTY_APP = [
+    "rest_framework",
+    "rest_framework.authtoken",
+    "drf_spectacular",
+]
+
+MY_APPS = ["attendance", "clinic", "doctor", "receptionist", "especialty"]
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APP + MY_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
