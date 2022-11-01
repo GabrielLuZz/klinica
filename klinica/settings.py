@@ -63,13 +63,12 @@ THIRD_PARTY_APP = [
 ]
 
 MY_APPS = [
+    "users",
     "attendance",
     "clinic",
-    "doctor",
-    "receptionist",
     "specialty",
     "health_plans",
-    "address",
+    "addresses"
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APP + MY_APPS
@@ -145,6 +144,9 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+
+AUTH_USER_MODEL = 'users.User'
 
 
 # Internationalization
