@@ -8,7 +8,7 @@ class User(AbstractUser):
     cpf = models.CharField(max_length=11, null=True)
     birth_date=models.DateField(null=True)
     is_doctor=models.BooleanField(default=False)
-    is_recepcionist=models.BooleanField(default=False)
+    is_receptionist=models.BooleanField(default=False)
     crm=models.CharField(max_length=6, null=True)
 
     #specialties
