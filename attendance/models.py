@@ -1,26 +1,43 @@
+import uuid
 from django.db import models
 
 # Create your models here.
-class StatusChoiches(models.TextChoices):
 
-    WAITING="Em espera"
-    IN_PROGRESS="Em andamento"
-    CANCELED="Cancelado"
-    FINISHED="Finalizado"
+class Progress(models.TextChoices):
+    # WAITING = "Waiting Attendance"
+    DEFAULT = "Waiting Attendance"
+    DURING = "During Attendance"
+    FINISHED = "Finished Attendance"
 
 
 class Attendance(models.Model):
-    
-    status=models.CharField(max_length=20, choices=StatusChoiches.choices, default=StatusChoiches.WAITING)
-    attendance_type=models.CharField(max_length=50)
-    attendance_info=models.TextField()
-    created_at=models.DateField(auto_now_add=True)
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    status = models.CharField(
+        max_length=50,
+        choices=Progress.choices,
+        default=Progress.DEFAULT,
+    )
+    type = models.CharField(max_length=50)
+    information = models.TextField()
+    date = models.DateField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    doctor = models.ForeignKey(
+        "doctor.Doctor",
+        on_delete=models.CASCADE,
+        related_name="attendances",
+    )
+    receptionist = models.ForeignKey(
+        "receptionist.Receptionist",
+        on_delete=models.CASCADE,
+        related_name="attendances",
+    )
+    patient = models.ForeignKey(
+        "patient.Patient",
+        on_delete=models.CASCADE,
+        related_name="attendances",
+    )
 
-    users=models.ManyToManyField("users.User", through="AttendanceUsers", related_name="attendances")
+    def __repr__(self) -> str:
+        return f"<Attendance {self.type} - {self.status}>"
 
-
-class AttendanceUsers(models.Model):
-
-    user=models.ForeignKey("users.User", on_delete=models.CASCADE)
-    attendance=models.ForeignKey(Attendance, on_delete=models.CASCADE)
-    
