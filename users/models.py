@@ -20,3 +20,4 @@ class User(AbstractUser):
     address=models.OneToOneField("addresses.Address", on_delete=models.CASCADE, related_name="patient", null=True)
     #patients_info
     patient_info=models.OneToOneField("patients_info.PatientInfo", on_delete=models.CASCADE, related_name="patient", null=True)
+    
