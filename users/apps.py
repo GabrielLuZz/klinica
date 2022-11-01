@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ReceptionistConfig(AppConfig):
+class UsersConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "receptionist"
+    name = "users"
