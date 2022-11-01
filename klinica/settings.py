@@ -12,21 +12,37 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+import dotenv
+import environ
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+dotenv.load_dotenv()
+...
+SECRET_KEY = os.getenv('SECRET_KEY')
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
+env = environ.Env(
+    # type casting, valor padrão para a variável
+    DEBUG=(bool, False)
+)
 
-# SECURITY WARNING: keep the secret key used in production secret!
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+environ.Env.read_env(BASE_DIR / '.env')
+
+SECRET_KEY = env('SECRET_KEY')
+
+
+DEBUG = env('DEBUG')
+
+
 SECRET_KEY = "django-insecure-vgk7g5nqo(s&q1$%&jko=*e(e=ol1^a-&)lf8c_myp__2!42^u"
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost"]
 
 
 # Application definition
@@ -106,7 +122,7 @@ else:
             "NAME": os.environ.get("POSTGRES_DB"),
             "USER": os.environ.get("POSTGRES_USER"),
             "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-            "HOST": "db",
+            "HOST": os.environ.get("DB_HOST"),
             "PORT": 5432,
         }
     }
