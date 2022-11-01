@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 
 # Create your models here.
+
 class Progress(models.TextChoices):
     # WAITING = "Waiting Attendance"
     DEFAULT = "Waiting Attendance"
@@ -39,3 +40,4 @@ class Attendance(models.Model):
 
     def __repr__(self) -> str:
         return f"<Attendance {self.type} - {self.status}>"
+
