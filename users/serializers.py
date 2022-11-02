@@ -1,12 +1,15 @@
 from rest_framework import serializers
 from users.models import User
+from addresses.serializers import AddressesSerializer
 
 
 class PatientSerializer(serializers.ModelSerializer):
 
+    address=AddressesSerializer()
+
     class Meta:
         model=User
-        fields=["username", "cpf", "birth_date", "is_doctor", "is_recepcionist"]
-        read_only_fields = ["id"]
+        fields=["id", "username", "cpf", "birth_date", "is_doctor", "is_recepcionist", "address"]
+        read_only_fields = ["id", "is_doctor", "is_recepcionist", "is_superuser"]
         write_only_fields = ["password"]
         unique_fields = ["username", "cpf"]
