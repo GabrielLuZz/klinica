@@ -8,6 +8,7 @@ class PatientSerializer(serializers.ModelSerializer):
     address = AddressesSerializer()
 
     class Meta:
+
         model = User
         fields = [
             "id",
@@ -26,6 +27,10 @@ class PatientSerializer(serializers.ModelSerializer):
         ]
         write_only_fields = ["password"]
         unique_fields = ["username", "cpf"]
+
+
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)
 
 
 class DoctorSerializer(serializers.ModelSerializer):
