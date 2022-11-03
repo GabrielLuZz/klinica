@@ -4,9 +4,9 @@ from rest_framework.views import Request, View
 from .models import Attendance
 
 
-class isAttendance(permissions.BasePermission):
+class isReceptionist(permissions.BasePermission):
     def has_object_permission(self, request: Request, view: View, obj: Attendance):
-        return request.user.is_attendance
+        return request.user.is_receptionist
 
 
 class isDoctor(permissions.BasePermission):

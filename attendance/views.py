@@ -3,14 +3,14 @@ from .serializers import AttendanceSerializer, AttendanceDetailSerializer
 from .models import Attendance
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from .permissions import isAttendance, isDoctor, isOwner
+from .permissions import isReceptionist, isDoctor, isOwner
 
 # Create your views here.
 
 
 class CreateAttendanceView(generics.CreateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [isAttendance, IsAuthenticated]
+    permission_classes = [isReceptionist, IsAuthenticated]
     serializer_class = AttendanceSerializer
     queryset = Attendance.objects
 
