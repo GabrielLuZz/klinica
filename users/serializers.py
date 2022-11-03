@@ -64,7 +64,7 @@ class DoctorSerializer(serializers.ModelSerializer):
         return doctor
 
 
-class RecepcionistSerializer(serializers.ModelSerializer):
+class ReceptionistSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
