@@ -10,4 +10,6 @@ urlpatterns = [
     path("patients/<pk>/", views.UserPatientDetailView.as_view()),
     path("login/", obtain_auth_token),
     path("login/patient/", LoginPatientUser.as_view()),
+    path("doctor/", views.UserDoctorView.as_view()),
+    path("doctor/<pk>/", views.UserDoctorDetailView.as_view()),
 ]
