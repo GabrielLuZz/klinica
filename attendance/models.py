@@ -19,24 +19,24 @@ class Attendance(models.Model):
     )
     type = models.CharField(max_length=50)
     information = models.TextField()
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(auto_now_add=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    doctor = models.ForeignKey(
-        "doctor.Doctor",
-        on_delete=models.CASCADE,
-        related_name="attendances",
-    )
-    receptionist = models.ForeignKey(
-        "receptionist.Receptionist",
-        on_delete=models.CASCADE,
-        related_name="attendances",
-    )
-    patient = models.ForeignKey(
-        "patient.Patient",
-        on_delete=models.CASCADE,
-        related_name="attendances",
-    )
+    # updated_at = models.DateTimeField(auto_now=True)
+    # doctor = models.ForeignKey(
+    #     "doctor.Doctor",
+    #     on_delete=models.CASCADE,
+    #     related_name="attendances",
+    # )
+    # receptionist = models.ForeignKey(
+    #     "receptionist.Receptionist",
+    #     on_delete=models.CASCADE,
+    #     related_name="attendances",
+    # )
+    # patient = models.ForeignKey(
+    #     "patient.Patient",
+    #     on_delete=models.CASCADE,
+    #     related_name="attendances",
+    # )
 
     def __repr__(self) -> str:
         return f"<Attendance {self.type} - {self.status}>"
