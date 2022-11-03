@@ -8,7 +8,6 @@ class PatientSerializer(serializers.ModelSerializer):
     address = AddressesSerializer()
 
     class Meta:
-
         model = User
         fields = [
             "id",
@@ -16,13 +15,13 @@ class PatientSerializer(serializers.ModelSerializer):
             "cpf",
             "birth_date",
             "is_doctor",
-            "is_recepcionist",
+            "is_receptionist",
             "address",
         ]
         read_only_fields = [
             "id",
             "is_doctor",
-            "is_recepcionist",
+            "is_receptionist",
             "is_superuser",
         ]
         write_only_fields = ["password"]
@@ -68,7 +67,6 @@ class Recepcionist(serializers.ModelSerializer):
             "is_doctor",
             "is_recepcionist",
         ]
-
         read_only_fields = ["id"]
         write_only_fields = ["password"]
         unique_fields = ["username", "cpf"]
