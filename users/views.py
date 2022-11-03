@@ -1,13 +1,7 @@
 from django.shortcuts import render
-from rest_framework.generics import (
-    CreateAPIView,
-    RetrieveAPIView,
-    ListAPIView,
-    DestroyAPIView,
-    UpdateAPIView,
-    ListCreateAPIView,
-    RetrieveUpdateDestroyAPIView,
-)
+
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, ListAPIView, DestroyAPIView, UpdateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+
 from users.models import User
 from users.serializers import (
     DoctorSerializer,
@@ -35,7 +29,6 @@ class UserPatientView(ListAPIView):
         return self.queryset.filter(
             is_doctor=False, is_receptionist=False, is_superuser=False
         )
-
 
 class UserPatientCreateView(AddressSave, CreateAPIView):
 
@@ -77,6 +70,9 @@ class UserPatientDetailView(RetrieveAPIView):
 
 class UserDoctorView(ListCreateAPIView):
 
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [isAdminOrReadOnly]
+
     queryset = User.objects.all()
     serializer_class = DoctorSerializer
 
@@ -88,6 +84,9 @@ class UserDoctorView(ListCreateAPIView):
 
 
 class UserDoctorDetailView(RetrieveUpdateDestroyAPIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [isAdminOrReadOnly]
 
     queryset = User.objects.all()
     serializer_class = DoctorSerializer

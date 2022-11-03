@@ -13,10 +13,10 @@ class IsReceptionistOrAdm(BasePermission):
         SAFE_METHODS = ("GET", "HEAD", "OPTIONS")
 
         return (
-            request.user
-            and request.user.is_authenticated
-            and request.user.is_superuser
-            or request.user.is_receptionist
+            request.user and
+            request.user.is_authenticated and
+            request.user.is_superuser or
+            request.user.is_receptionist
         )
 
 
