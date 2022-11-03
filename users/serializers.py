@@ -28,10 +28,45 @@ class PatientSerializer(serializers.ModelSerializer):
         unique_fields = ["username", "cpf"]
 
 
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)
+
+
 class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["username", "cpf", "birth_date", "is_doctor", "crm", "clinic"]
+        fields = [
+            "id",
+            "username",
+            "password",
+            "first_name",
+            "last_name",
+            "email",
+            "cpf",
+            "birth_date",
+            "is_doctor",
+            "crm",
+            "clinic",
+        ]
+        read_only_fields = ["id"]
+        write_only_fields = ["password"]
+        unique_fields = ["username", "cpf"]
+
+
+class Recepcionist(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "username",
+            "password",
+            "first_name",
+            "last_name",
+            "cpf",
+            "birth_date",
+            "is_doctor",
+            "is_recepcionist",
+        ]
         read_only_fields = ["id"]
         write_only_fields = ["password"]
         unique_fields = ["username", "cpf"]
