@@ -10,7 +10,7 @@ class StatusChoices(models.TextChoices):
 
 class Attendance(models.Model):
     
-    status=models.CharField(max_length=20, choices=StatusChoices.choices, default=StatusChoiches.WAITING)
+    status=models.CharField(max_length=20, choices=StatusChoices.choices, default=StatusChoices.WAITING)
     attendance_type=models.CharField(max_length=50)
     attendance_info=models.TextField()
     created_at=models.DateField(auto_now_add=True)
