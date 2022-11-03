@@ -6,4 +6,5 @@ class AddressesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=Address
-        fields=["__all__"]
+        fields=["id", "cep", "state", "street", "number"]
+        read_only_fields=["id"]
