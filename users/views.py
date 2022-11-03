@@ -1,21 +1,29 @@
 from django.shortcuts import render
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, ListAPIView, DestroyAPIView, UpdateAPIView
+from rest_framework.generics import (
+    CreateAPIView,
+    RetrieveAPIView,
+    ListAPIView,
+    DestroyAPIView,
+    UpdateAPIView,
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView,
+)
 from users.models import User
 from users.serializers import (
     DoctorSerializer,
     PatientSerializer,
-    RecepcionistSerializer,
+    ReceptionistSerializer,
 )
 from utils.patientMixins import AddressSave
 
 from rest_framework.authentication import TokenAuthentication
-from permissions import isAdminOrReadOnly
+from .permissions import isAdminOrReadOnly
 from rest_framework.permissions import IsAdminUser
-from utils.authenticationMixins import IsRecepcionistOrAdm, IsDoctorOrAdm
+from utils.authenticationMixins import IsReceptionistOrAdm, IsDoctorOrAdm
 
 # Create your views here.
 class UserPatientView(ListAPIView):
-    
+
     queryset = User.objects.all()
     serializer_class = PatientSerializer
 
@@ -24,16 +32,18 @@ class UserPatientView(ListAPIView):
 
     def get_queryset(self):
 
-      return self.queryset.filter(is_doctor=False, is_recepcionist=False, is_superuser=False)
+        return self.queryset.filter(
+            is_doctor=False, is_receptionist=False, is_superuser=False
+        )
 
-  
+
 class UserPatientCreateView(AddressSave, CreateAPIView):
-    
+
     queryset = User.objects.all()
     serializer_class = PatientSerializer
 
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsRecepcionistOrAdm]
+    permission_classes = [IsReceptionistOrAdm]
 
 
 class UserPatientDetailView(UpdateAPIView, DestroyAPIView):
@@ -42,16 +52,13 @@ class UserPatientDetailView(UpdateAPIView, DestroyAPIView):
     serializer_class = PatientSerializer
 
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsRecepcionistOrAdm]
+    permission_classes = [IsReceptionistOrAdm]
 
     def get_queryset(self):
 
         return self.queryset.filter(
-            is_doctor=False, is_recepcionist=False, is_superuser=False
+            is_doctor=False, is_receptionist=False, is_superuser=False
         )
-
-
-
 
 
 class UserPatientDetailView(RetrieveAPIView):
@@ -64,7 +71,7 @@ class UserPatientDetailView(RetrieveAPIView):
     def get_queryset(self):
 
         return self.queryset.filter(
-            is_doctor=False, is_recepcionist=False, is_superuser=False
+            is_doctor=False, is_receptionist=False, is_superuser=False
         )
 
 
@@ -76,7 +83,7 @@ class UserDoctorView(ListCreateAPIView):
     def get_queryset(self):
 
         return self.queryset.filter(
-            is_doctor=True, is_recepcionist=False, is_superuser=False
+            is_doctor=True, is_receptionist=False, is_superuser=False
         )
 
 
@@ -88,31 +95,31 @@ class UserDoctorDetailView(RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
 
         return self.queryset.filter(
-            is_doctor=True, is_recepcionist=False, is_superuser=False
+            is_doctor=True, is_receptionist=False, is_superuser=False
         )
 
 
-class UserRecepcionistView(ListCreateAPIView):
+class UserReceptionistView(ListCreateAPIView):
 
     queryset = User.objects.all()
-    serializer_class = RecepcionistSerializer
+    serializer_class = ReceptionistSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [isAdminOrReadOnly]
 
     def get_queryset(self):
 
         return self.queryset.filter(
-            is_doctor=False, is_recepcionist=True, is_superuser=False
+            is_doctor=False, is_receptionist=True, is_superuser=False
         )
 
 
-class UserRecepcionistDetailView(RetrieveUpdateDestroyAPIView):
+class UserReceptionistDetailView(RetrieveUpdateDestroyAPIView):
 
     queryset = User.objects.all()
-    serializer_class = RecepcionistSerializer
+    serializer_class = ReceptionistSerializer
 
     def get_queryset(self):
 
         return self.queryset.filter(
-            is_doctor=False, is_recepcionist=True, is_superuser=False
+            is_doctor=False, is_receptionist=True, is_superuser=False
         )

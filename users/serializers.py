@@ -53,7 +53,7 @@ class DoctorSerializer(serializers.ModelSerializer):
         unique_fields = ["username", "cpf"]
 
 
-class RecepcionistSerializer(serializers.ModelSerializer):
+class ReceptionistSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
@@ -65,7 +65,7 @@ class RecepcionistSerializer(serializers.ModelSerializer):
             "cpf",
             "birth_date",
             "is_doctor",
-            "is_recepcionist",
+            "is_receptionist",
         ]
         read_only_fields = ["id"]
         write_only_fields = ["password"]
