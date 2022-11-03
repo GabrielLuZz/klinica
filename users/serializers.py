@@ -53,7 +53,7 @@ class DoctorSerializer(serializers.ModelSerializer):
         unique_fields = ["username", "cpf"]
 
 
-class Recepcionist(serializers.ModelSerializer):
+class RecepcionistSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
