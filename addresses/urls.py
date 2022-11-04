@@ -3,5 +3,5 @@ from . import views
 
 
 urlpatterns = [
-    path("address/", views.UpdateAddressView.as_view()),
+    path("address/<pk>/", views.UpdateAddressView.as_view()),
 ]

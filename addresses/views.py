@@ -14,15 +14,3 @@ class UpdateAddressView(UpdateAPIView):
 
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsReceptionistOrAdm]
-
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-        if not instance.patient.id == request.user.id:
-            return Response({"detail": "You do not have permission to perform this action"}, status.HTTP_400_BAD_REQUEST)
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-
-
-        self.perform_update(serializer)
-        return Response(serializer.data)

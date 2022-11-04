@@ -13,8 +13,10 @@ class PatientSerializer(serializers.ModelSerializer):
             "id",
             "username",
             "cpf",
+            "password",
             "birth_date",
             "is_doctor",
+            "last_login",
             "is_receptionist",
             "address",
         ]
@@ -24,7 +26,9 @@ class PatientSerializer(serializers.ModelSerializer):
             "is_receptionist",
             "is_superuser",
         ]
-        write_only_fields = ["password"]
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
         unique_fields = ["username", "cpf"]
 
 
