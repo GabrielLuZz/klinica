@@ -12,11 +12,13 @@ class PatientSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "username",
+            "password",
             "cpf",
             "birth_date",
             "is_doctor",
             "is_receptionist",
             "address",
+            "last_login",
         ]
         read_only_fields = [
             "id",
@@ -24,8 +26,9 @@ class PatientSerializer(serializers.ModelSerializer):
             "is_receptionist",
             "is_superuser",
         ]
-        write_only_fields = ["password"]
-        unique_fields = ["username", "cpf"]
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
 
 
     def create(self, validated_data):
@@ -79,5 +82,40 @@ class ReceptionistSerializer(serializers.ModelSerializer):
             "is_receptionist",
         ]
         read_only_fields = ["id"]
-        write_only_fields = ["password"]
         unique_fields = ["username", "cpf"]
+        extra_kwargs = {
+            'password': {'write_only': True},
+            "is_receptionist": {"default": True},
+        }
+
+    def create (self, validated_data):
+        return User.objects.create_user(**validated_data)
+
+class DoctorAttendanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "username",
+            "cpf",
+            "is_doctor",
+        ]
+
+class ReceptionistAttendanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "username",
+            "cpf",
+            "is_receptionist",
+        ]
+
+class PatientAttendanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "username",
+            "cpf",
+        ]
