@@ -37,6 +37,10 @@ class PatientSerializer(serializers.ModelSerializer):
         return User.objects.create_user(**validated_data)
 
 
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)
+
+
 class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

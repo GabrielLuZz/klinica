@@ -5,7 +5,9 @@ import uuid
 
 # Create your models here.
 class Clinic(models.Model):
-    # id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    clinic_name = models.CharField(max_length=126)
+    clinic_name = models.CharField(max_length=126, unique=True)
     is_ocuped = models.BooleanField(default=False)
     is_ok = models.BooleanField(default=False)
+    doctor = models.OneToOneField(
+        "users.User", on_delete=models.CASCADE, related_name="clinic", null=True
+    )
