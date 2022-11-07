@@ -3,7 +3,7 @@ from .serializers import AttendanceSerializer, AttendanceDetailSerializer
 from .models import Attendance
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from .permissions import isReceptionist, isDoctor, isOwner
+from .permissions import IsReceptionist, IsDoctor, IsOwner
 from rest_framework.views import Response, status
 
 # Create your views here.
@@ -11,14 +11,14 @@ from rest_framework.views import Response, status
 
 class CreateAttendanceView(generics.CreateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [isReceptionist, IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsReceptionist]
     serializer_class = AttendanceSerializer
     queryset = Attendance.objects
 
 
 class RetrieveUpdateAttendanceView(generics.RetrieveUpdateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated, isDoctor]
+    permission_classes = [IsAuthenticated, IsDoctor]
     serializer_class = AttendanceDetailSerializer
     queryset = Attendance.objects
 
@@ -27,7 +27,7 @@ class RetrieveUpdateAttendanceView(generics.RetrieveUpdateAPIView):
 
 class ListAttendancesOwnerView(generics.ListAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated, isOwner]
+    permission_classes = [IsAuthenticated, IsOwner]
     serializer_class = AttendanceDetailSerializer
     lookup_url_kwarg = "user_id"
 
@@ -41,14 +41,14 @@ class ListAttendancesOwnerView(generics.ListAPIView):
 
 class ListAttendancesDoctorView(generics.ListAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated, isDoctor]
+    permission_classes = [IsAuthenticated, IsDoctor]
     serializer_class = AttendanceDetailSerializer
     lookup_url_kwarg = "user_id"
 
     def get_queryset(self):
         user_id = self.kwargs["user_id"]
         user_attendances = Attendance.objects.filter(
-            users__id=user_id, users__is_doctor=True
+            users__id=user_id
         )
 
         return user_attendances
