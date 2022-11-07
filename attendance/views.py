@@ -48,7 +48,7 @@ class ListAttendancesDoctorView(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.kwargs["user_id"]
         user_attendances = Attendance.objects.filter(
-            users__id=user_id, users__is_doctor=True
+            users__id=user_id
         )
 
         return user_attendances

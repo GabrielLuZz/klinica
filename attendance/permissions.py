@@ -15,5 +15,6 @@ class isDoctor(permissions.BasePermission):
 
 
 class isOwner(permissions.BasePermission):
-    def has_object_permission(self, request: Request, view: View, obj: Attendance):
-        return request.user in obj.users
+    def has_permission(self, request: Request, view: View):
+        user_id = request.path.split("/")[-3]
+        return request.user.id == int(user_id)
