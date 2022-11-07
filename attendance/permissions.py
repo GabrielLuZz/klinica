@@ -4,17 +4,17 @@ from rest_framework.views import Request, View
 from .models import Attendance
 
 
-class isReceptionist(permissions.BasePermission):
+class IsReceptionist(permissions.BasePermission):
     def has_permission(self, request: Request, view: View):
         return request.user.is_receptionist
 
 
-class isDoctor(permissions.BasePermission):
+class IsDoctor(permissions.BasePermission):
     def has_permission(self, request: Request, view: View):
         return request.user.is_doctor
 
 
-class isOwner(permissions.BasePermission):
+class IsOwner(permissions.BasePermission):
     def has_permission(self, request: Request, view: View):
         user_id = request.path.split("/")[-3]
         return request.user.id == int(user_id)
