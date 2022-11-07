@@ -39,7 +39,7 @@ class UserPatientCreateView(AddressSave, CreateAPIView):
     permission_classes = [IsReceptionistOrAdm]
 
 
-class UserPatientDetailView(UpdateAPIView, DestroyAPIView):
+class UserPatientDetailPatchView(UpdateAPIView, DestroyAPIView):
 
     queryset = User.objects.all()
     serializer_class = PatientSerializer
