@@ -1,4 +1,5 @@
 from addresses.models import Address
+from users.serializers import User
 from rest_framework.views import Response, status
 
 
@@ -12,14 +13,10 @@ class AddressSave:
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        address_instance = Address.objects.filter(
-            cep=self.request.data["address"]["cep"]
-        )
+        cpf_already_exists = User.objects.filter(cpf=request.data["cpf"])
 
-        if address_instance.count() > 0:
-            return Response(
-                {"detail": "Cep already exists"}, status.HTTP_400_BAD_REQUEST
-            )
+        if cpf_already_exists:
+            return Response({"detail": "key cpf already exists"}, status.HTTP_400_BAD_REQUEST)
 
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
