@@ -3,7 +3,7 @@ from .serializers import AttendanceSerializer, AttendanceDetailSerializer
 from .models import Attendance
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from .permissions import isReceptionist, isDoctor, isOwner
+from .permissions import IsReceptionist, IsDoctor, IsOwner
 from rest_framework.views import Response, status
 
 # Create your views here.
@@ -27,7 +27,7 @@ class RetrieveUpdateAttendanceView(generics.RetrieveUpdateAPIView):
 
 class ListAttendancesOwnerView(generics.ListAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated, isOwner]
+    permission_classes = [IsAuthenticated, IsOwner]
     serializer_class = AttendanceDetailSerializer
     lookup_url_kwarg = "user_id"
 
