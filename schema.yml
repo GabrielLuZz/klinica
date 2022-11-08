@@ -1,0 +1,1358 @@
+openapi: 3.0.3
+info:
+  title: Klinica
+  version: 1.0.0
+  description: Projeto final kenzie
+paths:
+  /api/address/{id}/:
+    put:
+      operationId: api_address_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this address.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Addresses'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Addresses'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Addresses'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Addresses'
+          description: ''
+    patch:
+      operationId: api_address_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this address.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAddresses'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAddresses'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAddresses'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Addresses'
+          description: ''
+  /api/attendance/:
+    post:
+      operationId: api_attendance_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+          description: ''
+  /api/attendance/{attendance_id}/:
+    get:
+      operationId: api_attendance_retrieve
+      parameters:
+      - in: path
+        name: attendance_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttendanceDetail'
+          description: ''
+    put:
+      operationId: api_attendance_update
+      parameters:
+      - in: path
+        name: attendance_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttendanceDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AttendanceDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AttendanceDetail'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttendanceDetail'
+          description: ''
+    patch:
+      operationId: api_attendance_partial_update
+      parameters:
+      - in: path
+        name: attendance_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAttendanceDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAttendanceDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAttendanceDetail'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttendanceDetail'
+          description: ''
+  /api/attendance/{user_id}/doctor/:
+    get:
+      operationId: api_attendance_doctor_list
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttendanceDetail'
+          description: ''
+  /api/attendance/{user_id}/user/:
+    get:
+      operationId: api_attendance_user_list
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttendanceDetail'
+          description: ''
+  /api/clinic/:
+    get:
+      operationId: api_clinic_list
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClinicList'
+          description: ''
+  /api/clinic/{id}/:
+    get:
+      operationId: api_clinic_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this clinic.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clinic'
+          description: ''
+    put:
+      operationId: api_clinic_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this clinic.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Clinic'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Clinic'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Clinic'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clinic'
+          description: ''
+    patch:
+      operationId: api_clinic_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this clinic.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedClinic'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedClinic'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedClinic'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clinic'
+          description: ''
+    delete:
+      operationId: api_clinic_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this clinic.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/clinic/register/:
+    post:
+      operationId: api_clinic_register_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Clinic'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Clinic'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Clinic'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clinic'
+          description: ''
+  /api/doctor/:
+    get:
+      operationId: api_doctor_list
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Doctor'
+          description: ''
+    post:
+      operationId: api_doctor_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Doctor'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Doctor'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Doctor'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doctor'
+          description: ''
+  /api/doctor/{id}/:
+    get:
+      operationId: api_doctor_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doctor'
+          description: ''
+    put:
+      operationId: api_doctor_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Doctor'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Doctor'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Doctor'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doctor'
+          description: ''
+    patch:
+      operationId: api_doctor_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDoctor'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDoctor'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDoctor'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doctor'
+          description: ''
+    delete:
+      operationId: api_doctor_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/login/:
+    post:
+      operationId: api_login_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+          description: ''
+  /api/login/patient/:
+    post:
+      operationId: api_login_patient_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+          description: ''
+  /api/patient/{id}/:
+    put:
+      operationId: api_patient_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Patient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Patient'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+          description: ''
+    patch:
+      operationId: api_patient_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPatient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPatient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPatient'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+          description: ''
+    delete:
+      operationId: api_patient_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/patients/:
+    get:
+      operationId: api_patients_list
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Patient'
+          description: ''
+  /api/patients/{id}/:
+    get:
+      operationId: api_patients_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+          description: ''
+  /api/patients/register/:
+    post:
+      operationId: api_patients_register_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Patient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Patient'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+          description: ''
+  /api/receptionists/:
+    get:
+      operationId: api_receptionists_list
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Receptionist'
+          description: ''
+    post:
+      operationId: api_receptionists_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Receptionist'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Receptionist'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Receptionist'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receptionist'
+          description: ''
+  /api/receptionists/{id}/:
+    get:
+      operationId: api_receptionists_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receptionist'
+          description: ''
+    put:
+      operationId: api_receptionists_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Receptionist'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Receptionist'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Receptionist'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receptionist'
+          description: ''
+    patch:
+      operationId: api_receptionists_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedReceptionist'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedReceptionist'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedReceptionist'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receptionist'
+          description: ''
+    delete:
+      operationId: api_receptionists_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Addresses:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        cep:
+          type: string
+          nullable: true
+          maxLength: 11
+        state:
+          type: string
+          nullable: true
+          maxLength: 2
+        street:
+          type: string
+          nullable: true
+          maxLength: 50
+        number:
+          type: string
+          nullable: true
+          maxLength: 8
+      required:
+      - id
+    Attendance:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        attendance_type:
+          type: string
+          maxLength: 50
+        attendance_info:
+          type: string
+        created_at:
+          type: string
+          format: date
+          readOnly: true
+        doctor_id:
+          type: string
+          writeOnly: true
+        receptionist_id:
+          type: string
+          writeOnly: true
+        patient_id:
+          type: string
+          writeOnly: true
+        doctor:
+          readOnly: true
+        receptionist:
+          readOnly: true
+        patient:
+          readOnly: true
+      required:
+      - attendance_info
+      - attendance_type
+      - created_at
+      - doctor
+      - doctor_id
+      - id
+      - patient
+      - patient_id
+      - receptionist
+      - receptionist_id
+    AttendanceDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        attendance_type:
+          type: string
+          maxLength: 50
+        attendance_info:
+          type: string
+        created_at:
+          type: string
+          format: date
+          readOnly: true
+        doctor:
+          readOnly: true
+        receptionist:
+          readOnly: true
+        patient:
+          readOnly: true
+      required:
+      - attendance_info
+      - attendance_type
+      - created_at
+      - doctor
+      - id
+      - patient
+      - receptionist
+    AuthToken:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          readOnly: true
+      required:
+      - password
+      - token
+      - username
+    Clinic:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        clinic_name:
+          type: string
+          maxLength: 126
+        is_ocuped:
+          type: boolean
+        is_ok:
+          type: boolean
+        doctor:
+          type: integer
+          nullable: true
+      required:
+      - clinic_name
+      - id
+    ClinicList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        clinic_name:
+          type: string
+          maxLength: 126
+        is_ocuped:
+          type: boolean
+        is_ok:
+          type: boolean
+        doctor:
+          $ref: '#/components/schemas/DoctorReturn'
+      required:
+      - clinic_name
+      - doctor
+      - id
+    Doctor:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        cpf:
+          type: string
+          nullable: true
+          maxLength: 11
+        birth_date:
+          type: string
+          format: date
+          nullable: true
+        is_doctor:
+          type: boolean
+        crm:
+          type: string
+          nullable: true
+          maxLength: 6
+        is_receptionist:
+          type: boolean
+          readOnly: true
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly
+            assigning them.
+      required:
+      - id
+      - is_receptionist
+      - is_superuser
+      - password
+      - username
+    DoctorReturn:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        crm:
+          type: string
+          nullable: true
+          maxLength: 6
+        specialties:
+          type: array
+          items:
+            type: integer
+      required:
+      - id
+      - specialties
+    PatchedAddresses:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        cep:
+          type: string
+          nullable: true
+          maxLength: 11
+        state:
+          type: string
+          nullable: true
+          maxLength: 2
+        street:
+          type: string
+          nullable: true
+          maxLength: 50
+        number:
+          type: string
+          nullable: true
+          maxLength: 8
+    PatchedAttendanceDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        attendance_type:
+          type: string
+          maxLength: 50
+        attendance_info:
+          type: string
+        created_at:
+          type: string
+          format: date
+          readOnly: true
+        doctor:
+          readOnly: true
+        receptionist:
+          readOnly: true
+        patient:
+          readOnly: true
+    PatchedClinic:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        clinic_name:
+          type: string
+          maxLength: 126
+        is_ocuped:
+          type: boolean
+        is_ok:
+          type: boolean
+        doctor:
+          type: integer
+          nullable: true
+    PatchedDoctor:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        cpf:
+          type: string
+          nullable: true
+          maxLength: 11
+        birth_date:
+          type: string
+          format: date
+          nullable: true
+        is_doctor:
+          type: boolean
+        crm:
+          type: string
+          nullable: true
+          maxLength: 6
+        is_receptionist:
+          type: boolean
+          readOnly: true
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly
+            assigning them.
+    PatchedPatient:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        cpf:
+          type: string
+          nullable: true
+          maxLength: 11
+        birth_date:
+          type: string
+          format: date
+          nullable: true
+        is_doctor:
+          type: boolean
+          readOnly: true
+        last_login:
+          type: string
+          format: date-time
+          nullable: true
+        is_receptionist:
+          type: boolean
+          readOnly: true
+        address:
+          $ref: '#/components/schemas/Addresses'
+    PatchedReceptionist:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        cpf:
+          type: string
+          nullable: true
+          maxLength: 11
+        birth_date:
+          type: string
+          format: date
+          nullable: true
+        is_doctor:
+          type: boolean
+        is_receptionist:
+          type: boolean
+          default: true
+    Patient:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        cpf:
+          type: string
+          nullable: true
+          maxLength: 11
+        birth_date:
+          type: string
+          format: date
+          nullable: true
+        is_doctor:
+          type: boolean
+          readOnly: true
+        last_login:
+          type: string
+          format: date-time
+          nullable: true
+        is_receptionist:
+          type: boolean
+          readOnly: true
+        address:
+          $ref: '#/components/schemas/Addresses'
+      required:
+      - address
+      - id
+      - is_doctor
+      - is_receptionist
+      - password
+      - username
+    Receptionist:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        cpf:
+          type: string
+          nullable: true
+          maxLength: 11
+        birth_date:
+          type: string
+          format: date
+          nullable: true
+        is_doctor:
+          type: boolean
+        is_receptionist:
+          type: boolean
+          default: true
+      required:
+      - id
+      - password
+      - username
+    StatusEnum:
+      enum:
+      - Em espera
+      - Em andamento
+      - Cancelado
+      - Finalizado
+      type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
