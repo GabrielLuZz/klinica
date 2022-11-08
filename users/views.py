@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from utils.helpers import get_object_or_404_with_message
 from specialty.models import Specialty
-from rest_framework.views import Response, status
+from rest_framework.views import Response, Request, status, APIView
 
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, ListAPIView, DestroyAPIView, UpdateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
@@ -16,7 +16,6 @@ from utils.patientMixins import AddressSave
 
 from rest_framework.authentication import TokenAuthentication
 
-from utils.specialtiesMixins import SpecialtySave
 from .permissions import isAdminOrReadOnly
 from rest_framework.permissions import IsAdminUser
 from utils.authenticationMixins import IsReceptionistOrAdm, IsDoctorOrAdm
@@ -74,39 +73,23 @@ class UserPatientDetailView(RetrieveAPIView):
         )
 
 
-class UserDoctorView(ListCreateAPIView):
+class UserDoctorView(APIView):
+    def get(self, request: Request) -> Response:
+        doctors = User.objects.all()
+        serializer = DoctorSerializer(many=True, instance=doctors)
 
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [isAdminOrReadOnly]
+        return Response(serializer.data)
 
-    queryset = User.objects.all()
-    serializer_class = DoctorSerializer
-
-    def get_queryset(self):
-        return self.queryset.filter(
-            is_doctor=True, is_receptionist=False, is_superuser=False
-        )
+    def post(self, request: Request) -> Response:
+        specialties_data = request.data.pop("specialties")
+        serializer = DoctorSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
 
-    # def create(self, request, *args, **kwargs):
-    #     specialties = request.data.pop("specialties")
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-        
-    #     self.perform_create(serializer)
-    #     headers = self.get_success_headers(serializer.data)
-    #     doctor = User.objects.filter(id=serializer.data["id"])
+        serializer.save(specialties=specialties_data)
 
-    #     for specialty in specialties:
-    #         specialty, _ = Specialty.objects.get_or_create(**specialty)
-    #         doctor.specialties.add(specialty)
-        
-    #     doctor_serializer = self.get_serializer(doctor)
-    #     doctor_serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status.HTTP_201_CREATED)
 
-    #     return Response(doctor_serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-        
 
 
 class UserDoctorDetailView(RetrieveUpdateDestroyAPIView):

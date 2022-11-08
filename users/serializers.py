@@ -43,7 +43,7 @@ class PatientSerializer(serializers.ModelSerializer):
 
 
 class DoctorSerializer(serializers.ModelSerializer):
-    specialties = SpecialtySerializer(many=True)
+    specialties = SpecialtySerializer(many=True, read_only=True)
     class Meta:
         model = User
         fields = [
@@ -74,7 +74,7 @@ class DoctorSerializer(serializers.ModelSerializer):
     def create (self, validated_data):
         specialties_data = validated_data.pop("specialties")
         doctor = User.objects.create_user(**validated_data)
-        i
+
 
         for specialty in specialties_data:
             specialty, _ = Specialty.objects.get_or_create(**specialty)
