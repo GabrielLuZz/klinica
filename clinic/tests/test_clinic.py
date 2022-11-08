@@ -13,13 +13,27 @@ class ClinicTests(APITestCase):
             "is_doctor": True,
         }
 
-        self.clinic_data = {"clinic_name": "Consultorio 1"}
+        self.clinic_data = {"clinic_name": "Consultorio 1", "doctor": 1}
 
         self.login_super_user = {"username": "super", "password": "1234"}
 
+        self.doctor_data = {
+            "username": "doctor1",
+            "password": "1234",
+            "is_doctor": True,
+        }
+
         User.objects.create_superuser(**self.super_user_data)
 
-    def test_register_clinic_without_authentication(self):
+        token = self.client.post(
+            "http://localhost:8000/api/login/",
+            self.login_super_user,
+            format="json",
+        )
+
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + token.data["token"])
+
+    def test_register_clinic_without_valid_doctor(self):
 
         response = self.client.post(
             "http://localhost:8000/api/clinic/register/",
@@ -27,7 +41,7 @@ class ClinicTests(APITestCase):
             format="json",
         )
 
-        self.assertAlmostEqual(response.status_code, 401)
+        self.assertAlmostEqual(response.status_code, 400)
 
     def test_register_clinic(self):
 
@@ -39,9 +53,15 @@ class ClinicTests(APITestCase):
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token.data["token"])
 
+        doctor = self.client.post(
+            "http://localhost:8000/api/doctor/",
+            self.doctor_data,
+            format="json",
+        )
+
         response = self.client.post(
             "http://localhost:8000/api/clinic/register/",
-            self.clinic_data,
+            {"clinic_name": "Consutorio1", "doctor": 7},
             format="json",
         )
 
@@ -66,13 +86,19 @@ class ClinicTests(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token.data["token"])
 
         self.client.post(
+            "http://localhost:8000/api/doctor/",
+            self.doctor_data,
+            format="json",
+        )
+
+        clinic = self.client.post(
             "http://localhost:8000/api/clinic/register/",
-            self.clinic_data,
+            {"clinic_name": "Consutorio1", "doctor": 4},
             format="json",
         )
 
         response = self.client.patch(
-            "http://localhost:8000/api/clinic/3/",
+            "http://localhost:8000/api/clinic/2/",
             {"clinic_name": "Consultorio 2"},
             format="json",
         )
