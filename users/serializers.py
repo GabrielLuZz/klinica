@@ -54,7 +54,6 @@ class DoctorSerializer(serializers.ModelSerializer):
             "birth_date",
             "is_doctor",
             "crm",
-            "clinic",
             "is_receptionist",
             "is_superuser",
         ]
