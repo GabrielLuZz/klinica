@@ -48,27 +48,15 @@ class DoctorTests(TestCase):
         }
 
         cls.base_url = "/api/doctor/"
-        cls.update_url = "/api/doctor/<pk>/"
+        cls.update_url = "/api/doctor/"
         cls.login_url = "/api/login/"
 
 
 
-    def test_cant_list_doctors_without_token(self):
+    def test_can_list_doctors_without_token(self):
 
         response = self.client.get(self.base_url)
 
-        self.assertEqual(response.status_code, 200)
-
-
-    def test_admin_can_list_users(self):
-
-        login = self.client.post(self.login_url, self.admin_login)
-        token = login.json()["token"]
-        header = {
-           "HTTP_AUTHORIZATION": f"Token {token}"
-        }
-
-        response = self.client.get(self.base_url, **header)
         self.assertEqual(response.status_code, 200)
 
 
@@ -112,3 +100,81 @@ class DoctorTests(TestCase):
         self.assertTrue(response.json()["token"])
 
 
+    def test_doctor_should_not_update_if_not_adm_user(self):
+
+        login = self.client.post(self.login_url, self.admin_login)
+        token = login.json()["token"]
+        header = {
+           "HTTP_AUTHORIZATION": f"Token {token}"
+        }
+
+        doctor = self.client.post(self.base_url, self.doctor_user, **header, format="json")
+
+        doctor_login = self.client.post(self.login_url, self.doctor_login)
+
+        doctor_id = doctor.json()["id"]
+        doctor_token = doctor_login.json()["token"]
+        doctor_header = {
+           "HTTP_AUTHORIZATION": f"Token {doctor_token}"
+        }
+        
+        response = self.client.patch(f"{self.base_url}{doctor_id}/", self.doctor_update, **doctor_header, format="json")
+
+        self.assertEqual(response.status_code, 403)
+
+
+    def test_adm_user_can_update_doctor(self):
+
+        login = self.client.post(self.login_url, self.admin_login)
+        token = login.json()["token"]
+        header = {
+           "HTTP_AUTHORIZATION": f"Token {token}"
+        }
+
+        doctor = self.client.post(self.base_url, self.doctor_user, **header, format="json")
+        doctor_id = doctor.json()["id"]
+        
+        response = self.client.patch(f'{self.update_url}{doctor_id}/', self.doctor_update, **header,format="json", content_type='application/json')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["username"], "Felipe")
+
+
+    def test_adm_user_can_delete_doctor(self):
+
+        login = self.client.post(self.login_url, self.admin_login)
+        token = login.json()["token"]
+        header = {
+           "HTTP_AUTHORIZATION": f"Token {token}"
+        }
+
+        doctor = self.client.post(self.base_url, self.doctor_user, **header, format="json")
+        doctor_id = doctor.json()["id"]
+        
+        response = self.client.delete(f'{self.update_url}{doctor_id}/', **header,format="json", content_type='application/json')
+
+        self.assertEqual(response.status_code, 204)
+
+
+
+    def test_doctor_login_cant_self_delete(self):
+
+        login = self.client.post(self.login_url, self.admin_login)
+        token = login.json()["token"]
+        header = {
+           "HTTP_AUTHORIZATION": f"Token {token}"
+        }
+
+        doctor = self.client.post(self.base_url, self.doctor_user, **header, format="json")
+       
+        doctor_login = self.client.post(self.login_url, self.doctor_login)
+        doctor_id = doctor.json()["id"]
+
+        doctor_token = doctor_login.json()["token"]
+        doctor_header = {
+           "HTTP_AUTHORIZATION": f"Token {doctor_token}"
+        }
+        
+        response = self.client.delete(f'{self.update_url}{doctor_id}/', **doctor_header,format="json", content_type='application/json')
+
+        self.assertEqual(response.status_code, 403)
