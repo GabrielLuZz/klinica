@@ -4,9 +4,6 @@ from rest_framework import serializers
 from .models import Attendance
 from users.models import User
 from utils.helpers import get_object_or_404_with_message
-<<<<<<< HEAD
-from users.serializers import DoctorSerializer, PatientSerializer
-=======
 from users.serializers import (
     DoctorSerializer,
     PatientSerializer,
@@ -14,7 +11,6 @@ from users.serializers import (
     ReceptionistAttendanceSerializer,
     PatientAttendanceSerializer,
 )
->>>>>>> 20e9d5f7335a78af56e2799a41767c1fc7491466
 import ipdb
 
 
@@ -46,36 +42,14 @@ class AttendanceSerializer(serializers.ModelSerializer):
     def get_doctor(self, obj):
         attendance = model_to_dict(obj)
         doctor = [user for user in attendance["users"] if user.is_doctor][0]
-<<<<<<< HEAD
-        return {
-            "id": doctor.id,
-            "username": doctor.username,
-            "cpf": doctor.cpf,
-            "birth_date": doctor.birth_date,
-            "is_doctor": doctor.is_doctor,
-            "is_receptionist": doctor.is_receptionist,
-        }
-=======
         doctorSerializer = DoctorAttendanceSerializer(doctor)
         return doctorSerializer.data
->>>>>>> 20e9d5f7335a78af56e2799a41767c1fc7491466
 
     def get_receptionist(self, obj):
         attendance = model_to_dict(obj)
         receptionist = [user for user in attendance["users"] if user.is_receptionist][0]
-<<<<<<< HEAD
-        return {
-            "id": receptionist.id,
-            "username": receptionist.username,
-            "cpf": receptionist.cpf,
-            "birth_date": receptionist.birth_date,
-            "is_doctor": receptionist.is_doctor,
-            "is_receptionist": receptionist.is_receptionist,
-        }
-=======
         receptionistSerializer = ReceptionistAttendanceSerializer(receptionist)
         return receptionistSerializer.data
->>>>>>> 20e9d5f7335a78af56e2799a41767c1fc7491466
 
     def get_patient(self, obj):
         attendance = model_to_dict(obj)
@@ -84,19 +58,8 @@ class AttendanceSerializer(serializers.ModelSerializer):
             for user in attendance["users"]
             if not user.is_doctor and not user.is_receptionist
         ][0]
-<<<<<<< HEAD
-        return {
-            "id": patient.id,
-            "username": patient.username,
-            "cpf": patient.cpf,
-            "birth_date": patient.birth_date,
-            "is_doctor": patient.is_doctor,
-            "is_receptionist": patient.is_receptionist,
-        }
-=======
         patientSerializer = PatientAttendanceSerializer(patient)
         return patientSerializer.data
->>>>>>> 20e9d5f7335a78af56e2799a41767c1fc7491466
 
     def create(self, validated_data):
         doctor_id = validated_data.pop("doctor_id")
@@ -152,36 +115,14 @@ class AttendanceDetailSerializer(serializers.ModelSerializer):
     def get_doctor(self, obj):
         attendance = model_to_dict(obj)
         doctor = [user for user in attendance["users"] if user.is_doctor][0]
-<<<<<<< HEAD
-        return {
-            "id": doctor.id,
-            "username": doctor.username,
-            "cpf": doctor.cpf,
-            "birth_date": doctor.birth_date,
-            "is_doctor": doctor.is_doctor,
-            "is_receptionist": doctor.is_receptionist,
-        }
-=======
         doctorSerializer = DoctorAttendanceSerializer(doctor)
         return doctorSerializer.data
->>>>>>> 20e9d5f7335a78af56e2799a41767c1fc7491466
 
     def get_receptionist(self, obj):
         attendance = model_to_dict(obj)
         receptionist = [user for user in attendance["users"] if user.is_receptionist][0]
-<<<<<<< HEAD
-        return {
-            "id": receptionist.id,
-            "username": receptionist.username,
-            "cpf": receptionist.cpf,
-            "birth_date": receptionist.birth_date,
-            "is_doctor": receptionist.is_doctor,
-            "is_receptionist": receptionist.is_receptionist,
-        }
-=======
         receptionistSerializer = ReceptionistAttendanceSerializer(receptionist)
         return receptionistSerializer.data
->>>>>>> 20e9d5f7335a78af56e2799a41767c1fc7491466
 
     def get_patient(self, obj):
         attendance = model_to_dict(obj)
@@ -190,16 +131,5 @@ class AttendanceDetailSerializer(serializers.ModelSerializer):
             for user in attendance["users"]
             if not user.is_doctor and not user.is_receptionist
         ][0]
-<<<<<<< HEAD
-        return {
-            "id": patient.id,
-            "username": patient.username,
-            "cpf": patient.cpf,
-            "birth_date": patient.birth_date,
-            "is_doctor": patient.is_doctor,
-            "is_receptionist": patient.is_receptionist,
-        }
-=======
         patientSerializer = PatientAttendanceSerializer(patient)
         return patientSerializer.data
->>>>>>> 20e9d5f7335a78af56e2799a41767c1fc7491466
