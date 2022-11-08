@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from users.models import User
 from addresses.serializers import AddressesSerializer
+from specialty.serializers import SpecialtySerializer, Specialty
 
 
 class PatientSerializer(serializers.ModelSerializer):
@@ -42,6 +43,7 @@ class PatientSerializer(serializers.ModelSerializer):
 
 
 class DoctorSerializer(serializers.ModelSerializer):
+    specialties = SpecialtySerializer(many=True, read_only=True)
     class Meta:
         model = User
         fields = [
@@ -56,6 +58,7 @@ class DoctorSerializer(serializers.ModelSerializer):
             "crm",
             "is_receptionist",
             "is_superuser",
+            "specialties",
         ]
         read_only_fields = [
             "id",
@@ -68,7 +71,14 @@ class DoctorSerializer(serializers.ModelSerializer):
         }
 
     def create (self, validated_data):
+        specialties_data = validated_data.pop("specialties")
         doctor = User.objects.create_user(**validated_data)
+
+
+        for specialty in specialties_data:
+            specialty, _ = Specialty.objects.get_or_create(**specialty)
+            doctor.specialties.add(specialty)
+        
         return doctor
 
 

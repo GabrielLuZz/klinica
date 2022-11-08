@@ -1,5 +1,9 @@
 from django.shortcuts import render
 
+from utils.helpers import get_object_or_404_with_message
+from specialty.models import Specialty
+from rest_framework.views import Response, Request, status, APIView
+
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, ListAPIView, DestroyAPIView, UpdateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 from users.models import User
@@ -11,6 +15,7 @@ from users.serializers import (
 from utils.patientMixins import AddressSave
 
 from rest_framework.authentication import TokenAuthentication
+
 from .permissions import isAdminOrReadOnly
 from rest_framework.permissions import IsAdminUser
 from utils.authenticationMixins import IsReceptionistOrAdm, IsDoctorOrAdm
@@ -68,19 +73,23 @@ class UserPatientDetailView(RetrieveAPIView):
         )
 
 
-class UserDoctorView(ListCreateAPIView):
+class UserDoctorView(APIView):
+    def get(self, request: Request) -> Response:
+        doctors = User.objects.all()
+        serializer = DoctorSerializer(many=True, instance=doctors)
 
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [isAdminOrReadOnly]
+        return Response(serializer.data)
 
-    queryset = User.objects.all()
-    serializer_class = DoctorSerializer
+    def post(self, request: Request) -> Response:
+        specialties_data = request.data.pop("specialties")
+        serializer = DoctorSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-    def get_queryset(self):
 
-        return self.queryset.filter(
-            is_doctor=True, is_receptionist=False, is_superuser=False
-        )
+        serializer.save(specialties=specialties_data)
+
+        return Response(serializer.data, status.HTTP_201_CREATED)
+
 
 
 class UserDoctorDetailView(RetrieveUpdateDestroyAPIView):
