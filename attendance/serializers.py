@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from .models import Attendance
 from users.models import User
+import typing
 from utils.helpers import get_object_or_404_with_message
 from users.serializers import (
     DoctorSerializer,
@@ -39,19 +40,19 @@ class AttendanceSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["created_at", "id"]
 
-    def get_doctor(self, obj):
+    def get_doctor(self, obj) -> typing.Any:
         attendance = model_to_dict(obj)
         doctor = [user for user in attendance["users"] if user.is_doctor][0]
         doctorSerializer = DoctorAttendanceSerializer(doctor)
         return doctorSerializer.data
 
-    def get_receptionist(self, obj):
+    def get_receptionist(self, obj) -> typing.Any:
         attendance = model_to_dict(obj)
         receptionist = [user for user in attendance["users"] if user.is_receptionist][0]
         receptionistSerializer = ReceptionistAttendanceSerializer(receptionist)
         return receptionistSerializer.data
 
-    def get_patient(self, obj):
+    def get_patient(self, obj) -> typing.Any:
         attendance = model_to_dict(obj)
         patient = [
             user
@@ -112,19 +113,19 @@ class AttendanceDetailSerializer(serializers.ModelSerializer):
     receptionist = serializers.SerializerMethodField()
     patient = serializers.SerializerMethodField()
 
-    def get_doctor(self, obj):
+    def get_doctor(self, obj) -> typing.Any:
         attendance = model_to_dict(obj)
         doctor = [user for user in attendance["users"] if user.is_doctor][0]
         doctorSerializer = DoctorAttendanceSerializer(doctor)
         return doctorSerializer.data
 
-    def get_receptionist(self, obj):
+    def get_receptionist(self, obj) -> typing.Any:
         attendance = model_to_dict(obj)
         receptionist = [user for user in attendance["users"] if user.is_receptionist][0]
         receptionistSerializer = ReceptionistAttendanceSerializer(receptionist)
         return receptionistSerializer.data
 
-    def get_patient(self, obj):
+    def get_patient(self, obj) -> typing.Any:
         attendance = model_to_dict(obj)
         patient = [
             user
