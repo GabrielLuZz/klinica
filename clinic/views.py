@@ -8,7 +8,6 @@ from clinic.models import Clinic
 from clinic.serializers import ClinicSerializer, ClinicListSerializer
 from rest_framework.authentication import TokenAuthentication
 from .permissions import isAdminOrReadOnly
-from utils.clinic_doctor_mixins import DoctorSave
 
 # Create your views here.
 
@@ -18,7 +17,7 @@ class ListClinicView(ListAPIView):
     serializer_class = ClinicListSerializer
 
 
-class CreateClinicView(DoctorSave, CreateAPIView):
+class CreateClinicView(CreateAPIView):
     queryset = Clinic.objects.all()
     serializer_class = ClinicSerializer
 
@@ -29,3 +28,6 @@ class CreateClinicView(DoctorSave, CreateAPIView):
 class DetailClinicView(RetrieveUpdateDestroyAPIView):
     queryset = Clinic.objects.all()
     serializer_class = ClinicSerializer
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [isAdminOrReadOnly]

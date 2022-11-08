@@ -7,9 +7,10 @@ from rest_framework import status
 from django.db import IntegrityError
 
 
-class DoctorSave:
-    def perform_create(self, serializer):
-        user = get_object_or_404_with_message(
-            User, pk=self.request.data["doctor"], msg="Doctor not found"
-        )
-        serializer.save(doctor=user)
+# class DoctorSave:
+#     def perform_create(self, serializer):
+#         if self.request.data["doctor"]:
+#             user = get_object_or_404_with_message(
+#                 User, pk=self.request.data["doctor"], msg="Doctor not found"
+#             )
+#             serializer.save(doctor=user)
