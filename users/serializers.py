@@ -30,7 +30,8 @@ class PatientSerializer(serializers.ModelSerializer):
             "is_superuser",
         ]
         extra_kwargs = {
-            'password': {'write_only': True}
+            'password': {'write_only': True},
+            "cpf": {"required": True}
         }
 
 
@@ -67,7 +68,8 @@ class DoctorSerializer(serializers.ModelSerializer):
         ]
         unique_fields = ["username", "cpf"]
         extra_kwargs = {
-            'password': {'write_only': True}
+            'password': {'write_only': True},
+            "cpf": {"required": True},
         }
 
     def create (self, validated_data):
@@ -102,7 +104,8 @@ class ReceptionistSerializer(serializers.ModelSerializer):
             'password': {'write_only': True},
             "is_receptionist": {"default": True},
             "first_name": {"required": True},
-            "last_name": {"required": True}
+            "last_name": {"required": True},
+            "cpf": {"required": True}
         }
 
     def create (self, validated_data):
