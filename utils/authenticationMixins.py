@@ -33,6 +33,23 @@ class IsDoctorOrAdm(BasePermission):
         )
 
 
+
+class IsDoctorOrAdmOrOwner(BasePermission):
+    def has_permission(self, request, view):
+
+        SAFE_METHODS = ("GET", "HEAD", "OPTIONS")
+
+        request_array = request.path.split("/")
+
+        return (
+            request.user
+            and request.user.is_authenticated
+            and request.user.is_superuser
+            or request.user.is_doctor or
+            request.user.id == int(request_array[3])
+        )
+
+
 class LoginPatientUser(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
