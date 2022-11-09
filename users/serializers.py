@@ -101,6 +101,8 @@ class ReceptionistSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {'write_only': True},
             "is_receptionist": {"default": True},
+            "first_name": {"required": True},
+            "last_name": {"required": True}
         }
 
     def create (self, validated_data):
