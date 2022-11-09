@@ -18,7 +18,7 @@ from rest_framework.authentication import TokenAuthentication
 
 from .permissions import isAdminOrReadOnly
 from rest_framework.permissions import IsAdminUser
-from utils.authenticationMixins import IsReceptionistOrAdm, IsDoctorOrAdm
+from utils.authenticationMixins import IsReceptionistOrAdm, IsDoctorOrAdm, IsDoctorOrAdmOrOwner
 
 # Create your views here.
 class UserPatientView(ListAPIView):
@@ -64,7 +64,7 @@ class UserPatientDetailView(RetrieveAPIView):
     serializer_class = PatientSerializer
 
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsDoctorOrAdm]
+    permission_classes = [IsDoctorOrAdmOrOwner]
 
     def get_queryset(self):
 
@@ -79,7 +79,7 @@ class UserDoctorView(APIView):
     permission_classes = [isAdminOrReadOnly]
 
     def get(self, request: Request) -> Response:
-        doctors = User.objects.all()
+        doctors = User.objects.filter(is_doctor = True)
         serializer = DoctorSerializer(many=True, instance=doctors)
 
         return Response(serializer.data)
