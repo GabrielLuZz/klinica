@@ -4,7 +4,7 @@ from django.test import TestCase
 
 
 # Create your tests here.
-class DoctorTests(TestCase):
+class DoctorTests(APITestCase):
     @classmethod
     def setUpTestData(cls) -> None:
         cls.admin_user = {
@@ -29,8 +29,10 @@ class DoctorTests(TestCase):
 	        "cpf": 12312312300,
 	        "birth_date": "1988-02-01",
         	"is_doctor": True,
-	        "crm": "123123"
-
+	        "crm": "123123",
+            "specialties": [{
+                "name": "medico"
+            }]
         }
 
         cls.doctor_login = {
@@ -134,7 +136,7 @@ class DoctorTests(TestCase):
         doctor = self.client.post(self.base_url, self.doctor_user, **header, format="json")
         doctor_id = doctor.json()["id"]
         
-        response = self.client.patch(f'{self.update_url}{doctor_id}/', self.doctor_update, **header,format="json", content_type='application/json')
+        response = self.client.patch(f'{self.update_url}{doctor_id}/', self.doctor_update, **header,format="json")
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["username"], "Felipe")

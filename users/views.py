@@ -74,6 +74,10 @@ class UserPatientDetailView(RetrieveAPIView):
 
 
 class UserDoctorView(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [isAdminOrReadOnly]
+
     def get(self, request: Request) -> Response:
         doctors = User.objects.all()
         serializer = DoctorSerializer(many=True, instance=doctors)
