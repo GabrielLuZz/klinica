@@ -147,7 +147,7 @@ class PatientTests(APITestCase):
            "HTTP_AUTHORIZATION": f"Token {patient_token}"
         }
         
-        response = self.client.patch(f"{self.base_url}{patient_id}/", self.patient_update, **patient_header, format="json")
+        response = self.client.patch(f"{self.update_url}{patient_id}/", self.patient_update, **patient_header, format="json")
 
         self.assertEqual(response.status_code, 403)
 

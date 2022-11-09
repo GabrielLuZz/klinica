@@ -1176,6 +1176,7 @@ components:
             $ref: '#/components/schemas/Specialty'
           readOnly: true
       required:
+      - cpf
       - id
       - is_receptionist
       - is_superuser
@@ -1434,6 +1435,7 @@ components:
           $ref: '#/components/schemas/Addresses'
       required:
       - address
+      - cpf
       - id
       - is_doctor
       - is_receptionist
@@ -1475,6 +1477,7 @@ components:
           type: boolean
           default: true
       required:
+      - cpf
       - first_name
       - id
       - last_name
