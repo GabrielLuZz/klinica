@@ -79,7 +79,7 @@ class UserDoctorView(APIView):
     permission_classes = [isAdminOrReadOnly]
 
     def get(self, request: Request) -> Response:
-        doctors = User.objects.all()
+        doctors = User.objects.filter(is_doctor = True)
         serializer = DoctorSerializer(many=True, instance=doctors)
 
         return Response(serializer.data)
