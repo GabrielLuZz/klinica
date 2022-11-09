@@ -11,6 +11,7 @@ class ClinicTests(APITestCase):
         cls.doctor_data = {
             "username": "doctor",
             "password": "1234",
+            "cpf": "12312312300",
             "is_doctor": True,
             "specialties": [{
                 "name": "medico"
